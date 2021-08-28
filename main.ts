@@ -1,6 +1,9 @@
 scene.onOverlapTile(SpriteKind.Player, assets.tile`lava`, function (sprite, location) {
     game.over(false, effects.melt);
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`portal`, function(sprite, location) {
+    game.over(true);
+})
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (cat.vy == 0) {
         cat.vy = -170
