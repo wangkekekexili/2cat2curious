@@ -1,19 +1,27 @@
-scene.onOverlapTile(SpriteKind.Player, assets.tile`lava`, function (sprite, location) {
-    game.over(false, effects.melt);
-})
-scene.onOverlapTile(SpriteKind.Player, assets.tile`portal`, function(sprite, location) {
-    game.over(true);
-})
+namespace SpriteKind {
+    export const Coin = SpriteKind.create()
+}
 controller.up.onEvent(ControllerButtonEvent.Pressed, function () {
     if (cat.vy == 0) {
         cat.vy = -170
     }
+})
+sprites.onOverlap(SpriteKind.Player, SpriteKind.Coin, function (me, other) {
+    info.changeScoreBy(1)
+    other.destroy()
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (cat.vy == 0) {
         cat.vy = -170
     }
 })
+scene.onOverlapTile(SpriteKind.Player, assets.tile`portal`, function (sprite, location) {
+    game.over(true)
+})
+scene.onOverlapTile(SpriteKind.Player, assets.tile`lava`, function (sprite, location) {
+    game.over(false, effects.melt)
+})
+let coin: Sprite = null
 let cat: Sprite = null
 scene.setBackgroundColor(9)
 cat = sprites.create(img`
@@ -36,3 +44,31 @@ cat.ay = 350
 controller.moveSprite(cat, 100, 0)
 scene.cameraFollowSprite(cat)
 tiles.setTilemap(tilemap`level1`)
+for (let coinPlaceholder of tiles.getTilesByType(assets.tile`coinPlaceholder`)) {
+    coin = sprites.create(img`
+        . . . . . . . . . . . . . . . . 
+        . . . . . . . . . . . . . . . . 
+        . . . . . f f f f f f f . . . . 
+        . . . . f 5 5 5 5 5 5 5 f . . . 
+        . . . f 5 5 4 4 4 4 4 4 5 f . . 
+        . . f 5 5 5 5 5 5 5 5 5 5 5 f . 
+        . . f 5 4 5 5 5 5 5 5 5 5 5 f . 
+        . . f 5 4 5 5 5 5 5 5 5 5 5 f . 
+        . . f 5 4 5 5 5 5 5 5 5 5 5 f . 
+        . . f 5 4 5 5 5 5 5 5 5 5 5 f . 
+        . . f 5 4 5 5 5 5 5 5 5 5 5 f . 
+        . . f 5 4 5 5 5 5 5 5 5 5 5 f . 
+        . . f 5 5 5 5 5 5 5 5 5 5 5 f . 
+        . . . f 5 5 4 4 5 5 5 5 5 f . . 
+        . . . . f 5 5 5 5 5 5 5 f . . . 
+        . . . . . f f f f f f f . . . . 
+        `, SpriteKind.Coin)
+    animation.runImageAnimation(
+    coin,
+    assets.animation`myAnim`,
+    100,
+    true
+    )
+    tiles.placeOnTile(coin, coinPlaceholder)
+    tiles.setTileAt(coinPlaceholder, assets.tile`transparency16`)
+}
