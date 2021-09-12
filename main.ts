@@ -50,6 +50,38 @@ namespace CatImg {
         . f d b d f f f d f . . . .
         . . f f f f . . f f . . . .
     `
+    export const ToRight2 = img`
+        . . . . . . . . . . . . . .
+        . . . . e e e . . . . e e e
+        . . . . c d d c . . c d d c
+        . . . . c b d d f f d d b c
+        . . . . c 3 b d b d d b 3 c
+        . . . . f b 3 d d d d 3 b f
+        . . . . e d d d d d d d d e
+        . b f b e d f d d d d f d e
+        . f d f f d d f d d f d d f
+        . f d f b 2 d d b b d d b f
+        . f b d b d 2 2 2 2 2 2 f .
+        . . f f f d d d d d d d f .
+        . . . . f d b d f f f d f .
+        . . . . f f f f f . . f . .
+    `
+    export const ToLeft2 = img`
+        . . . . . . . . . . . . . .
+        e e e . . . . e e e . . . .
+        c d d c . . c d d c . . . .
+        c b d d f f d d b c . . . .
+        c 3 b d d b d b 3 c . . . .
+        f b 3 d d d d 3 b f . . . .
+        e d d d d d d d d e . . . .
+        e d f d d d d f d e b f b .
+        f d d f d d f d d f f d f .
+        f b d d b b d d 2 b f d f .
+        . f 2 2 2 2 2 2 d b d b f .
+        . f d d d d d d d f f f . .
+        . f d f f f d b d f . . . .
+        . . f f . . f f f . . . . .
+    `
     export const JumpToRight = img`
         . . . . . . . . . . . . . .
         . . . . e e e . . . . e e e
@@ -135,15 +167,27 @@ game.onUpdate(function() {
     if (vx > 0) {
         if (vy < 0) {
             cat.setImage(CatImg.JumpToRight);
-        } else {
+        } else if (vy > 0) {
             cat.setImage(CatImg.ToRight);
+        } else {
+            if (Math.floor(game.runtime() / 100) % 2 === 0) {
+                cat.setImage(CatImg.ToRight);
+            } else {
+                cat.setImage(CatImg.ToRight2);
+            }
         }
         lastVx = vx;
     } else if (vx < 0) {
         if (vy < 0) {
             cat.setImage(CatImg.JumpToLeft);
-        } else {
+        } else if (vy > 0) {
             cat.setImage(CatImg.ToLeft);
+        } else {
+            if (Math.floor(game.runtime() / 100) % 2 === 0) {
+                cat.setImage(CatImg.ToLeft);
+            } else {
+                cat.setImage(CatImg.ToLeft2);
+            }
         }
         lastVx = vx;
     } else {
