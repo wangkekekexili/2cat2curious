@@ -65,7 +65,7 @@ sprites.onOverlap(SpriteKind.Player, SpriteKind.Enemy, function(cat, bee) {
     } else {
         info.changeLifeBy(-1)
     }
-    bee.destroy()
+    bee.destroy(effects.ashes)
 })
 controller.A.onEvent(ControllerButtonEvent.Pressed, function () {
     if (cat.vy == 0) {
@@ -95,7 +95,7 @@ cat = sprites.create(catImg, SpriteKind.Player)
 cat.ay = 350
 controller.moveSprite(cat, 100, 0)
 scene.cameraFollowSprite(cat)
-tiles.setTilemap(tilemap`level1`)
+tiles.setTilemap(tilemap`level1`) 
 for (let coinPlaceholder of tiles.getTilesByType(assets.tile`coinPlaceholder`)) {
     coin = sprites.create(imgPlaceholder, SpriteKind.Coin)
     animation.runImageAnimation(
